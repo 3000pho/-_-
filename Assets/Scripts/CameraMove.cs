@@ -5,7 +5,6 @@ using UnityEngine;
 public class CameraMove : MonoBehaviour {
 	public CharMove target;
 	public Quaternion camDir;
-	public GameObject currTarget;
 
 	private float dist_h;
 	private float dist_v;

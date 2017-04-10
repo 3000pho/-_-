@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using cakeslice;
 
 public class CharMove : MonoBehaviour {
 
@@ -8,28 +9,46 @@ public class CharMove : MonoBehaviour {
 	{
 		idle = 0,
 		walk,
+		get_item,
+		pick_up,
+		change_item,
+		put_down,
 	}
+	delegate void doItem(GameObject target);
 
-	public float moveSpeed;
-	public float rotateSpeed;
 	public Vector3 movement;
 	public CameraMove cam;
 	public bool isForward;
 
 	private Rigidbody rb;
 	private Animator animator;
-	private CharState state = CharState.idle;
+	private CharState state;
+	private GameObject item;
+	private GameObject currTarget;
+	private Transform equipPosition;
+	private Transform dropPosition;
 	//private CharacterController controller;
+	private bool isHold;
+	private float moveSpeed;
+	private float rotateSpeed;
+	private int count;
 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
 		animator = GetComponent<Animator> ();
 		//controller = GetComponent<CharacterController> ();
+		state = CharState.idle;
 		movement = new Vector3 (0, 0, 0);
 		moveSpeed = 2f;
 		rotateSpeed = 6f;
 		isForward = true;
+		isHold = false;
+		item = null;
+		currTarget = null;
+		equipPosition = GameObject.Find ("equip_position").transform;
+		dropPosition = GameObject.Find("drop_position").transform;
+		count = 0;
 	}
 
 	// Update is called once per frame
@@ -58,6 +77,37 @@ public class CharMove : MonoBehaviour {
 			state = CharState.idle;	
 		}
 
+		//about item
+		if(Input.GetKey (KeyCode.Z) && count++ > 10)
+			isHold = true;
+
+		if (Input.GetKeyUp(KeyCode.Z)) {
+			doItem func;
+
+			if (currTarget) {
+				if (item == null) {
+					state = CharState.pick_up;
+					func = new doItem (PickUp);
+					StartCoroutine (waitForPassFrame(9,func, currTarget));
+
+				} else if (isHold) {
+					state = CharState.change_item;
+					animator.SetBool ("isChange", true);
+					func = new doItem (ChangeItem);
+					StartCoroutine (waitForPassFrame (15,func,currTarget));
+
+				}
+			} else if(item){
+				state = CharState.put_down;
+				animator.SetBool ("isChange", false);
+				func = new doItem (PutDown);
+				StartCoroutine (waitForPassFrame (6, func, item));
+			}
+
+			count = 0;
+			isHold = false;
+		}
+
 		animator.SetInteger ("state", (int)state);
 	}
 
@@ -83,4 +133,50 @@ public class CharMove : MonoBehaviour {
 		else
 			return false;
 	}
+
+	void OnTriggerEnter(Collider other){
+		if (other.gameObject.CompareTag("Item")){
+			currTarget = other.gameObject;
+			currTarget.GetComponentInChildren<Outline> ().enabled = true;
+
+		}
+	}
+
+	void OnTriggerExit(Collider other){
+		if (currTarget) {
+			currTarget.GetComponentInChildren<Outline> ().enabled = false;
+			currTarget = null;
+		}
+	}
+
+	void PickUp(GameObject target){
+		target.transform.SetParent (equipPosition);
+		target.transform.localPosition = Vector3.zero;
+		target.transform.rotation = new Quaternion (0, 0, 0, 0);
+		item = target;
+	}
+
+	void PutDown(GameObject target){
+		target.transform.SetParent (null);
+		target.transform.position = dropPosition.position;
+		item = null;
+	}
+
+	void ChangeItem(GameObject target){
+		PutDown (item);
+		PickUp (target);
+		state = CharState.pick_up;
+	}
+
+	IEnumerator waitForPassFrame(int frame, doItem func, GameObject target) {
+		int playFrame = 0;
+
+		while (playFrame++ < frame) {
+			//print ("wait for end of frame..." + playFrame.ToString());
+			yield return new WaitForEndOfFrame();
+		}
+
+		func(target);
+	}
+		
 }
