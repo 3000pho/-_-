@@ -54,6 +54,10 @@
      <Compile Include="Assets\OutlineEffect\OutlineEffect.cs" />
      <Compile Include="Assets\Scripts\CameraMove.cs" />
      <Compile Include="Assets\Scripts\CharMove.cs" />
+     <Compile Include="Assets\Scripts\DownItemAnim.cs" />
+     <Compile Include="Assets\Scripts\DuringAnim.cs" />
+     <Compile Include="Assets\Scripts\IdleAnim.cs" />
+     <Compile Include="Assets\Scripts\UpItemAnim.cs" />
      <None Include="Assets\Optimize_SDKohaku-Chanz\Shader\Unitychan_chara_eye.shader" />
      <None Include="Assets\OutlineEffect\Resources\OutlineShader.shader" />
      <None Include="Assets\Optimize_SDKohaku-Chanz\Readme_Optimize_SD Kohaku-Chanz.txt" />

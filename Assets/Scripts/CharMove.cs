@@ -11,20 +11,21 @@ public class CharMove : MonoBehaviour {
 		walk,
 		get_item,
 		pick_up,
-		change_item,
-		put_down,
+		down_item,
+		walk_during_up_item,
 	}
-	delegate void doItem(GameObject target);
+	//delegate void doItem(GameObject target);
 
 	public Vector3 movement;
 	public CameraMove cam;
 	public bool isForward;
+	public bool fix;
+	public CharState state;
+	public GameObject item;
+	public GameObject currTarget;
 
 	private Rigidbody rb;
 	private Animator animator;
-	private CharState state;
-	private GameObject item;
-	private GameObject currTarget;
 	private Transform equipPosition;
 	private Transform dropPosition;
 	//private CharacterController controller;
@@ -44,6 +45,7 @@ public class CharMove : MonoBehaviour {
 		rotateSpeed = 6f;
 		isForward = true;
 		isHold = false;
+		fix = false;
 		item = null;
 		currTarget = null;
 		equipPosition = GameObject.Find ("equip_position").transform;
@@ -57,7 +59,10 @@ public class CharMove : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
-		float h =  Input.GetAxis ("Horizontal");
+		if (fix)
+			return;
+		
+		float h = Input.GetAxis ("Horizontal");
 		float v = Input.GetAxis ("Vertical");
 		movement.Set (h, 0.0f, v);
 		//rotate input based camera's direction
@@ -66,7 +71,10 @@ public class CharMove : MonoBehaviour {
 
 		//movements exists
 		if (movement.magnitude != 0) {
-			state = CharState.walk;
+			if(IsAnimation("5_during_up_item"))
+				state = CharState.walk_during_up_item;
+			else
+				state = CharState.walk;
 			//movement = Vector3.Slerp (transform.forward, movement, 0.99f);
 
 			isForward = CheckIsForward (movement);
@@ -74,34 +82,30 @@ public class CharMove : MonoBehaviour {
 			Turn (movement);
 
 		} else {
-			state = CharState.idle;	
+			if(IsAnimation("6_walk_during_up_item"))
+				state = CharState.pick_up;
+			else
+				state = CharState.idle;
 		}
-
+	
 		//about item
 		if(Input.GetKey (KeyCode.Z) && count++ > 10)
 			isHold = true;
 
 		if (Input.GetKeyUp(KeyCode.Z)) {
-			doItem func;
 
 			if (currTarget) {
 				if (item == null) {
 					state = CharState.pick_up;
-					func = new doItem (PickUp);
-					StartCoroutine (waitForPassFrame(9,func, currTarget));
 
 				} else if (isHold) {
-					state = CharState.change_item;
+					state = CharState.down_item;
 					animator.SetBool ("isChange", true);
-					func = new doItem (ChangeItem);
-					StartCoroutine (waitForPassFrame (15,func,currTarget));
 
 				}
-			} else if(item){
-				state = CharState.put_down;
+			} else if (item) {
+				state = CharState.down_item;
 				animator.SetBool ("isChange", false);
-				func = new doItem (PutDown);
-				StartCoroutine (waitForPassFrame (6, func, item));
 			}
 
 			count = 0;
@@ -109,6 +113,7 @@ public class CharMove : MonoBehaviour {
 		}
 
 		animator.SetInteger ("state", (int)state);
+
 	}
 
 
@@ -136,6 +141,8 @@ public class CharMove : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other){
 		if (other.gameObject.CompareTag("Item")){
+			if (currTarget)
+				currTarget.GetComponentInChildren<Outline> ().enabled = false;
 			currTarget = other.gameObject;
 			currTarget.GetComponentInChildren<Outline> ().enabled = true;
 
@@ -143,40 +150,52 @@ public class CharMove : MonoBehaviour {
 	}
 
 	void OnTriggerExit(Collider other){
-		if (currTarget) {
+		if (currTarget == other.gameObject) {
 			currTarget.GetComponentInChildren<Outline> ().enabled = false;
 			currTarget = null;
 		}
 	}
 
-	void PickUp(GameObject target){
+	public void PickUp(GameObject target){
 		target.transform.SetParent (equipPosition);
 		target.transform.localPosition = Vector3.zero;
 		target.transform.rotation = new Quaternion (0, 0, 0, 0);
 		item = target;
 	}
 
-	void PutDown(GameObject target){
+	public void PutDown(GameObject target){
 		target.transform.SetParent (null);
 		target.transform.position = dropPosition.position;
 		item = null;
 	}
 
-	void ChangeItem(GameObject target){
+	public void ChangeItem(GameObject target){
 		PutDown (item);
 		PickUp (target);
-		state = CharState.pick_up;
 	}
-
-	IEnumerator waitForPassFrame(int frame, doItem func, GameObject target) {
-		int playFrame = 0;
-
-		while (playFrame++ < frame) {
-			//print ("wait for end of frame..." + playFrame.ToString());
-			yield return new WaitForEndOfFrame();
-		}
-
-		func(target);
-	}
+	
+//	IEnumerator waitForPassFrame(int frame, doItem func, GameObject target) {
+//		int playFrame = 0;
+//
+//		while (playFrame++ < frame) {
+//			//print ("wait for end of frame..." + playFrame.ToString());
+//			yield return new WaitForEndOfFrame();
+//		}
+//
+//		func(target);
+//	}
+	
+	bool IsAnimation(string name){
+		if (animator.GetCurrentAnimatorStateInfo (0).IsName(name))
+			return true;
 		
+//		if (animator.GetAnimatorTransitionInfo (0).IsName("0_idle -> about_item")
+//			|| animator.GetAnimatorTransitionInfo(0).IsName("4_down_item -> 3_up_item")
+//			|| animator.GetAnimatorTransitionInfo(0).IsName("5_during_up_item -> 4_down_item")) {
+//
+//			return true;
+//		}
+		
+		return false;
+	}
 }
