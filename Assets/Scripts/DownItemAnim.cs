@@ -9,7 +9,6 @@ public class DownItemAnim : StateMachineBehaviour {
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 //		Debug.Log ("down item enter");
 		character = animator.gameObject.GetComponent<CharMove> ();
-		character.fix = true;
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -20,9 +19,12 @@ public class DownItemAnim : StateMachineBehaviour {
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 //		Debug.Log ("down item exit");
-		if(!animator.GetBool("isChange"))
-			character.PutDown(character.item);
-		
+		if (character.state.Equals (CharMove.CharState.put_down)) {
+			character.PutDown (character.item);
+			character.state = CharMove.CharState.idle;
+			character.fix = false;
+		}
+
 	}
 
 	// OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

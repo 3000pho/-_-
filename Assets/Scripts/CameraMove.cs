@@ -28,6 +28,7 @@ public class CameraMove : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//about mouse input
 		float mouseX = Input.GetAxis("Mouse X");
 		float mouseWheel = Input.GetAxis("Mouse ScrollWheel");
 
@@ -37,8 +38,9 @@ public class CameraMove : MonoBehaviour {
 	}
 
 	void LateUpdate(){
+		//about move camera
 		if(target.movement.magnitude != 0){
-			if (target.isForward) {
+			if (target.CheckIsForward(target.movement)) {
 				//follow the target behind if movements exists
 				Follow ();
 

@@ -55,14 +55,15 @@
      <Compile Include="Assets\Scripts\CameraMove.cs" />
      <Compile Include="Assets\Scripts\CharMove.cs" />
      <Compile Include="Assets\Scripts\DownItemAnim.cs" />
-     <Compile Include="Assets\Scripts\DuringAnim.cs" />
-     <Compile Include="Assets\Scripts\IdleAnim.cs" />
      <Compile Include="Assets\Scripts\UpItemAnim.cs" />
      <None Include="Assets\Optimize_SDKohaku-Chanz\Shader\Unitychan_chara_eye.shader" />
      <None Include="Assets\OutlineEffect\Resources\OutlineShader.shader" />
      <None Include="Assets\Optimize_SDKohaku-Chanz\Readme_Optimize_SD Kohaku-Chanz.txt" />
      <None Include="Assets\Optimize_SDKohaku-Chanz\Shader\readme.txt" />
      <None Include="Assets\OutlineEffect\Resources\OutlineBufferShader.shader" />
+ <Reference Include="UnityEngine.Advertisements">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -77,6 +78,9 @@
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine.Purchasing">
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>

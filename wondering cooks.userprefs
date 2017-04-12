@@ -2,9 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CharMove.cs">
     <Files>
-      <File FileName="Assets\Scripts\CharMove.cs" Line="186" Column="3" />
-      <File FileName="Assets\Scripts\CameraMove.cs" Line="7" Column="27" />
-      <File FileName="Assets\UpItemAnim.cs" Line="20" Column="66" />
+      <File FileName="Assets\Scripts\CharMove.cs" Line="68" Column="1" />
+      <File FileName="Assets\Scripts\CameraMove.cs" Line="41" Column="22" />
+      <File FileName="Assets\Scripts\UpItemAnim.cs" Line="37" Column="5" />
+      <File FileName="Assets\Scripts\DownItemAnim.cs" Line="25" Column="26" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
