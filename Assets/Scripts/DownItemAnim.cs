@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AssemblyCSharp.Constant.Enums;
 
 public class DownItemAnim : StateMachineBehaviour {
 	private CharMove character;
@@ -19,9 +20,9 @@ public class DownItemAnim : StateMachineBehaviour {
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 //		Debug.Log ("down item exit");
-		if (character.state.Equals (CharMove.CharState.put_down)) {
+		if (character.state.Equals (CharState.put_down)) {
 			character.PutDown (character.item);
-			character.state = CharMove.CharState.idle;
+			character.state = CharState.idle;
 			character.fix = false;
 		}
 

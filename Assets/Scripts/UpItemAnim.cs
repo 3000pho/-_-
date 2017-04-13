@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AssemblyCSharp.Constant.Enums;
 
 public class UpItemAnim : StateMachineBehaviour {
 	private CharMove character;
@@ -21,9 +22,9 @@ public class UpItemAnim : StateMachineBehaviour {
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 //		Debug.Log ("up item exit");
 
-		if(character.state.Equals(CharMove.CharState.change_item)) {
+		if(character.state.Equals(CharState.change_item)) {
 			character.PutDown (character.item);
-			character.state = CharMove.CharState.pick_up;
+			character.state = CharState.pick_up;
 
 		}
 
