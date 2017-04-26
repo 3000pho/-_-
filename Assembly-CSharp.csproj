@@ -52,27 +52,24 @@
      <Compile Include="Assets\OutlineEffect\LinkedSet.cs" />
      <Compile Include="Assets\OutlineEffect\Outline.cs" />
      <Compile Include="Assets\OutlineEffect\OutlineEffect.cs" />
-     <Compile Include="Assets\Resources\Scripts\CameraMove.cs" />
-     <Compile Include="Assets\Resources\Scripts\CharMove.cs" />
-     <Compile Include="Assets\Resources\Scripts\Constant.cs" />
-     <Compile Include="Assets\Resources\Scripts\DownItemAnim.cs" />
-     <Compile Include="Assets\Resources\Scripts\Map\CommonEditorUi.cs" />
-     <Compile Include="Assets\Resources\Scripts\Map\ItemInfo.cs" />
-     <Compile Include="Assets\Resources\Scripts\Map\MapManager.cs" />
-     <Compile Include="Assets\Resources\Scripts\Map\MapManagerInspector.cs" />
-     <Compile Include="Assets\Resources\Scripts\Map\MapObject.cs" />
-     <Compile Include="Assets\Resources\Scripts\Map\TileInfo.cs" />
-     <Compile Include="Assets\Resources\Scripts\Map\ZoneInfo.cs" />
-     <Compile Include="Assets\Resources\Scripts\UpItemAnim.cs" />
+     <Compile Include="Assets\Scripts\CameraMove.cs" />
+     <Compile Include="Assets\Scripts\CharMove.cs" />
+     <Compile Include="Assets\Scripts\Constant.cs" />
+     <Compile Include="Assets\Scripts\DownItemAnim.cs" />
+     <Compile Include="Assets\Scripts\Map\CommonEditorUi.cs" />
+     <Compile Include="Assets\Scripts\Map\ItemInfo.cs" />
+     <Compile Include="Assets\Scripts\Map\MapManager.cs" />
+     <Compile Include="Assets\Scripts\Map\MapManagerInspector.cs" />
+     <Compile Include="Assets\Scripts\Map\MapObject.cs" />
+     <Compile Include="Assets\Scripts\Map\TileInfo.cs" />
+     <Compile Include="Assets\Scripts\Map\ZoneInfo.cs" />
+     <Compile Include="Assets\Scripts\UpItemAnim.cs" />
      <None Include="Assets\Optimize_SDKohaku-Chanz\Shader\Unitychan_chara_eye.shader" />
      <None Include="Assets\OutlineEffect\Resources\OutlineShader.shader" />
      <None Include="Assets\Optimize_SDKohaku-Chanz\Readme_Optimize_SD Kohaku-Chanz.txt" />
      <None Include="Assets\Optimize_SDKohaku-Chanz\Shader\readme.txt" />
      <None Include="Assets\OutlineEffect\Resources\OutlineBufferShader.shader" />
      <None Include="Assets\Five_Seamless_Tileable_Ground_Textures\read me.txt" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -87,9 +84,6 @@
  </Reference>
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Purchasing">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>

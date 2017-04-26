@@ -4,13 +4,11 @@
 -langversion:4
 -out:Temp/Assembly-CSharp.dll
 -r:"C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll"
--r:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll"
 -r:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll"
 -r:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll"
 -r:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/PlaymodeTestsRunner/UnityEngine.PlaymodeTestsRunner.dll"
 -r:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll"
 -r:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll"
--r:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll"
 -r:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll"
 -r:"C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll"
 -define:UNITY_5_3_OR_NEWER
@@ -86,18 +84,18 @@ Assets/OutlineEffect/Demo/Toggle.cs
 Assets/OutlineEffect/LinkedSet.cs
 Assets/OutlineEffect/Outline.cs
 Assets/OutlineEffect/OutlineEffect.cs
-Assets/Resources/Scripts/CameraMove.cs
-Assets/Resources/Scripts/CharMove.cs
-Assets/Resources/Scripts/Constant.cs
-Assets/Resources/Scripts/DownItemAnim.cs
-Assets/Resources/Scripts/Map/CommonEditorUi.cs
-Assets/Resources/Scripts/Map/ItemInfo.cs
-Assets/Resources/Scripts/Map/MapManager.cs
-Assets/Resources/Scripts/Map/MapManagerInspector.cs
-Assets/Resources/Scripts/Map/MapObject.cs
-Assets/Resources/Scripts/Map/TileInfo.cs
-Assets/Resources/Scripts/Map/ZoneInfo.cs
-Assets/Resources/Scripts/UpItemAnim.cs
+Assets/Scripts/CameraMove.cs
+Assets/Scripts/CharMove.cs
+Assets/Scripts/Constant.cs
+Assets/Scripts/DownItemAnim.cs
+Assets/Scripts/Map/CommonEditorUi.cs
+Assets/Scripts/Map/ItemInfo.cs
+Assets/Scripts/Map/MapManager.cs
+Assets/Scripts/Map/MapManagerInspector.cs
+Assets/Scripts/Map/MapObject.cs
+Assets/Scripts/Map/TileInfo.cs
+Assets/Scripts/Map/ZoneInfo.cs
+Assets/Scripts/UpItemAnim.cs
 -r:"C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\unity\System.Runtime.Serialization.dll"
 -r:"C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\unity\System.Xml.Linq.dll"
 -r:"C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\unity\UnityScript.dll"
