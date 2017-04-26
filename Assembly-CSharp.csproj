@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{43FE1B3C-B2E6-5CB8-92E4-8841B259C789}</ProjectGuid>
+    <ProjectGuid>{1D030B6D-1FD1-56D3-CADE-84083206A7E7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -52,16 +52,24 @@
      <Compile Include="Assets\OutlineEffect\LinkedSet.cs" />
      <Compile Include="Assets\OutlineEffect\Outline.cs" />
      <Compile Include="Assets\OutlineEffect\OutlineEffect.cs" />
-     <Compile Include="Assets\Scripts\CameraMove.cs" />
-     <Compile Include="Assets\Scripts\CharMove.cs" />
-     <Compile Include="Assets\Scripts\Constant.cs" />
-     <Compile Include="Assets\Scripts\DownItemAnim.cs" />
-     <Compile Include="Assets\Scripts\UpItemAnim.cs" />
+     <Compile Include="Assets\Resources\Scripts\CameraMove.cs" />
+     <Compile Include="Assets\Resources\Scripts\CharMove.cs" />
+     <Compile Include="Assets\Resources\Scripts\Constant.cs" />
+     <Compile Include="Assets\Resources\Scripts\DownItemAnim.cs" />
+     <Compile Include="Assets\Resources\Scripts\Map\CommonEditorUi.cs" />
+     <Compile Include="Assets\Resources\Scripts\Map\ItemInfo.cs" />
+     <Compile Include="Assets\Resources\Scripts\Map\MapManager.cs" />
+     <Compile Include="Assets\Resources\Scripts\Map\MapManagerInspector.cs" />
+     <Compile Include="Assets\Resources\Scripts\Map\MapObject.cs" />
+     <Compile Include="Assets\Resources\Scripts\Map\TileInfo.cs" />
+     <Compile Include="Assets\Resources\Scripts\Map\ZoneInfo.cs" />
+     <Compile Include="Assets\Resources\Scripts\UpItemAnim.cs" />
      <None Include="Assets\Optimize_SDKohaku-Chanz\Shader\Unitychan_chara_eye.shader" />
      <None Include="Assets\OutlineEffect\Resources\OutlineShader.shader" />
      <None Include="Assets\Optimize_SDKohaku-Chanz\Readme_Optimize_SD Kohaku-Chanz.txt" />
      <None Include="Assets\Optimize_SDKohaku-Chanz\Shader\readme.txt" />
      <None Include="Assets\OutlineEffect\Resources\OutlineBufferShader.shader" />
+     <None Include="Assets\Five_Seamless_Tileable_Ground_Textures\read me.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
