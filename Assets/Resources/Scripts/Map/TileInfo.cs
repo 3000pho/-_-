@@ -73,10 +73,15 @@ public class TileInfo : MapObject{
 			return true;
 	}
 
-	public override void SetOriginal ()
+	public override void SetColliders (bool enable)
 	{
-		UpdateType (type);
-		tileCollider.enabled = true;
+		if (enable) {
+			UpdateType (type);
+			tileCollider.enabled = true;
+		} else {
+			tileCollider.enabled = false;
+			boxCollider.enabled = false;
+		}
 	}
 
 	void SetIsHalf(bool isHalf){

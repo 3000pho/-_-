@@ -59,6 +59,7 @@ public class MapManagerInspector : Editor {
 
 		if (GUI.Button (new Rect (10, 10, 100, 30), Strings.Label_Tile_Mode)) {
 			mapManager.editMode = MapEditMode.tile_mode;
+
 		}
 		if (GUI.Button (new Rect (10, 50, 100, 30), Strings.Label_Item_Mode)) {
 			mapManager.editMode = MapEditMode.item_mode;
@@ -133,13 +134,14 @@ public class MapManagerInspector : Editor {
 			Vector2 mousePosition = e.mousePosition;
 			Ray ray = HandleUtility.GUIPointToWorldRay (mousePosition);
 			RaycastHit hit;
-			bool result = Physics.Raycast (ray, out hit, 1000f);
-			Debug.Log ("mousePosition: "+mousePosition);
-			Debug.Log ("ray: " + ray.ToString());
 
-			if (result) {
+			if (Physics.Raycast (ray, out hit, 1000f)) {
+	//			Debug.Log ("mousePosition: "+mousePosition);
+	//			Debug.Log ("ray: " + ray.ToString());
+
 				GameObject targetObj = hit.transform.gameObject;
-				Debug.Log ("target transform: " + hit.transform.position);
+//				Debug.Log ("target transform: " + hit.transform.position);
+
 				if (e.button == 0) { // left click button
 					if (e.shift) { // while shift key pressed
 						
@@ -386,6 +388,11 @@ public class MapManagerInspector : Editor {
 		EditorGUILayout.EndHorizontal ();
 	}
 
+	bool GetHit(Vector3 pos, out RaycastHit hit){
+		Ray ray = new Ray (pos, Vector3.down);
+		return Physics.Raycast (ray, out hit, 1000f);
+	}
+
 	public static class EditorList{
 		public static void Show(SerializedProperty list){
 			EditorGUILayout.PropertyField (list);
@@ -399,4 +406,5 @@ public class MapManagerInspector : Editor {
 			EditorGUI.indentLevel -= 1;
 		}
 	}
+
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 using Constant.Enums;
 
 public class ZoneInfo : MapObject {
-	public bool eventDone; // using in CharMove's trigger
-	Collider[] zone;
+	public bool eventDone = false; // using in CharMove's trigger
+	List<Collider> colliders = new List<Collider>();
 
 	public override void UpdateType(MapObjType t){
 		switch (type) {
@@ -18,19 +18,31 @@ public class ZoneInfo : MapObject {
 		type = t;
 	}
 
-	public bool isInZone(Collider c){
-		foreach(Collider member in zone){
-			if (member.Equals (c))
-				return true;
-		}
+	//call if the member object located cross
+	public void AddZoneMember(Collider c){
+		c.gameObject.transform.SetParent (transform);
+		colliders.Add (c);
 
-		return false;
 	}
 
-	//call if the member object located cross
-	public void AddZoneMember(GameObject obj){
-		obj.transform.SetParent (transform);
-		zone[zone.Length] = obj.GetComponent<BoxCollider> ();
+	public void RemoveZoneMember(Collider c, bool isDestroy = true){
+		c.gameObject.transform.SetParent (null);
+		colliders.Remove (c);
+		if(isDestroy)
+			Destroy (c.gameObject);
+	}
+
+	public void Merge(ZoneInfo zone){
+		foreach(Collider c in zone.colliders){
+			zone.RemoveZoneMember (c, false);
+			AddZoneMember (c);
+		}
+		Destroy (zone);
+	}
+
+	public void Destroy(){
+		colliders.Clear ();
+		Destroy (gameObject);
 	}
 
 	public override bool SetMembers ()
@@ -38,8 +50,10 @@ public class ZoneInfo : MapObject {
 		throw new System.NotImplementedException ();
 	}
 
-	public override void SetOriginal ()
-	{
-		throw new System.NotImplementedException ();
+	public override void SetColliders (bool enable){
+		foreach (Collider c in colliders) {
+			c.enabled = enable;
+		}
+		
 	}
 }

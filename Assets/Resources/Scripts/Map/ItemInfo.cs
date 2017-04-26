@@ -56,9 +56,13 @@ public class ItemInfo : MapObject{
 		type = t;
 	}
 
-	public override void SetOriginal ()
+	public override void SetColliders (bool enable)
 	{
-		UpdateType (type);
+		if (enable) {
+			UpdateType (type);
+		} else {
+			boxCollider.enabled = false;
+		}
 	}
 
 	public override bool SetMembers ()
