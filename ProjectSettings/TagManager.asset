@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Item
+  - Zone Member
+  - Portal
+  - Auto Save
+  - Event
   layers:
   - Default
   - TransparentFX

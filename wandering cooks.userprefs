@@ -1,8 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Map\CommonEditorUi.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Map\MapManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\Map\CommonEditorUi.cs" Line="4" Column="1" />
+      <File FileName="Assets\Scripts\Editor\MapManagerInspector.cs" Line="402" Column="5" />
+      <File FileName="Assets\Scripts\Map\MapManager.cs" Line="154" Column="118" />
+      <File FileName="Assets\Scripts\Constant.cs" Line="146" Column="15" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
