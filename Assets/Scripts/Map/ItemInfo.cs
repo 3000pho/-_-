@@ -7,18 +7,28 @@ public class ItemInfo : MapObject{
 	public ItemStyle currentItemStyle;
 	public BoxCollider boxCollider;
 	public bool gettable;
-	protected MeshRenderer meshRenderer;
 	protected int itemCode{ get; set;}
 
-	public void UpdateStyle(Material[] m){
-		if (meshRenderer == null || m == null)
+	public void UpdateStyle(GameObject[] m){
+		if (m == null)
 			return;
 
-		meshRenderer.material = m [(int)currentItemStyle];
+		if (transform.childCount > 0) {
+			//remove current model and change the model
+			MapManager.DestroyGameObject (transform.GetChild (0).gameObject);
+
+		}
+
+		//add model from fbx file
+		GameObject obj = Instantiate (m [(int)currentItemStyle]) as GameObject;
+		obj.transform.parent = transform;
+		obj.transform.localPosition = new Vector3 (0, -0.49f, 0);
+		obj.transform.localScale = GetResizedVector3 (obj);
+
 	}
 
 	public override bool UpdateType(MapObjType t){
-		if (meshRenderer == null || boxCollider == null) {
+		if (boxCollider == null) {
 			if (!SetMembers ())
 				return false;
 		}
@@ -48,23 +58,23 @@ public class ItemInfo : MapObject{
 		return true;
 	}
 
-	public override void SetColliders (bool enable)
-	{
-		if (enable) {
-			UpdateType (type);
-		} else {
-			boxCollider.enabled = false;
-		}
-	}
-
 	public override bool SetMembers ()
 	{
-		meshRenderer = GetComponent<MeshRenderer> ();
+		boxCollider = GetComponent<BoxCollider> ();
 
-		if (meshRenderer == null || boxCollider == null)
+		if (boxCollider == null)
 			return false;
 		else
 			return true;
+	}
+
+	Vector3 GetResizedVector3(GameObject obj){
+		LODGroup lodGroup = obj.GetComponent<LODGroup> ();
+		if(lodGroup){
+			float resized = boxCollider.size.x / lodGroup.size * 0.9f;
+			return new Vector3 (resized, resized, resized);
+		}
+		return obj.transform.localScale;
 	}
 }
 

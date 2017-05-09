@@ -1,10 +1,13 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Map\MapManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Map\TileInfo.cs">
     <Files>
-      <File FileName="Assets\Scripts\Editor\MapManagerInspector.cs" Line="402" Column="5" />
-      <File FileName="Assets\Scripts\Map\MapManager.cs" Line="154" Column="118" />
-      <File FileName="Assets\Scripts\Constant.cs" Line="146" Column="15" />
+      <File FileName="Assets\Scripts\Editor\MapManagerInspector.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Map\MapManager.cs" Line="124" Column="62" />
+      <File FileName="Assets\Scripts\Constant.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Map\MapObject.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Map\TileInfo.cs" Line="87" Column="4" />
+      <File FileName="Assets\Scripts\Map\ItemInfo.cs" Line="25" Column="60" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -15,7 +15,7 @@ public class MapManager : MonoBehaviour {
 	public GameObject baseItemPrefab;
 	public GameObject baseZonePrefab;
 	public Material[] tileMaterials;
-	public Material[] itemMaterials;
+	public GameObject[] itemModels;
 	public GameObject[,] tiles;
 	public List<ZoneInfo> zones = new List<ZoneInfo> ();
 	public MapEditMode editMode = MapEditMode.tile_mode;
@@ -121,10 +121,11 @@ public class MapManager : MonoBehaviour {
 					obj = Instantiate(baseItemPrefab) as GameObject;
 					obj.name = tile.name + Strings.Param__ + Strings.Param_item;
 					obj.transform.parent = tile.transform;
+					obj.transform.localPosition = new Vector3 (0, 0.49f, 0);
 					tile.item = obj.GetComponent<ItemInfo> ();
 					tile.item.UpdateType ((MapObjType)(int.Parse (infos [6])));
 					tile.item.currentItemStyle = (ItemStyle)(int.Parse (infos [7]));
-
+					tile.item.UpdateStyle (itemModels);
 				}
 			}
 		}
@@ -163,17 +164,18 @@ public class MapManager : MonoBehaviour {
 	public void AddOrEditItem(TileInfo tile){
 		if (tile.item) {
 			tile.item.currentItemStyle = editItemStyle;
-			tile.item.UpdateStyle (itemMaterials);
+			tile.item.UpdateStyle (itemModels);
 
 		} else {
 			//create item
 			GameObject item = Instantiate(baseItemPrefab) as GameObject;
 			item.name = tile.name + Strings.Param__ + Strings.Param_item;
 			item.transform.parent = tile.transform;
+			item.transform.localPosition = new Vector3 (0, 0.49f, 0);
 			ItemInfo newItem = item.GetComponent<ItemInfo> ();
 			newItem.UpdateType (editMapObjType);
 			newItem.currentItemStyle = editItemStyle;
-			newItem.UpdateStyle (itemMaterials);
+			newItem.UpdateStyle (itemModels);
 			tile.item = newItem;
 		}
 	}
@@ -273,7 +275,7 @@ public class MapManager : MonoBehaviour {
 		}
 	}
 
-	public void DestroyGameObject(GameObject obj){
+	public static void DestroyGameObject(GameObject obj){
 		if (Application.isPlaying == true)
 			Destroy (obj);
 		else
@@ -342,8 +344,10 @@ public class MapManager : MonoBehaviour {
 					repairColliders = false;
 					if (repairZone) {
 						zones.Add (obj.GetComponent<ZoneInfo> ());
-						if (zones [zones.Count - 1].colliders.Count == 0)
+						if (zones [zones.Count - 1].colliders.Count == 0) {
+							Debug.Log ("repair colliders");
 							repairColliders = true;
+						}
 					}
 
 					foreach (Transform zoneMember in obj.transform) {

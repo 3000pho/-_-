@@ -46,17 +46,19 @@ namespace Constant
 		public static readonly string Param_Save_zones_Count = "count  ";
 		public static readonly string Param_Load_Path = "MapData/";
 		public static readonly string Param_tileMaterials = "tileMaterials";
-		public static readonly string Param_itemMaterials = "itemMaterials";
+		public static readonly string Param_itemModels = "itemModels";
 		public static readonly string Param_zone = "zone";
 		public static readonly string Param_item = "item";
 		public static readonly string Param_Remove_All_Zone_Data = "Remove All Zone Data";
 		public static readonly string Param_zones = "zones";
 		public static readonly string Param_colliders = "colliders";
 		public static readonly string Param_null = "null";
+		public static readonly string Param_preview = "preview";
+		public static readonly string Param_PreviewCullingLayer = "PreviewCullingLayer";
+
 		public static readonly char Param_tab = '\t';
 		public static readonly char Param_enter = '\n';
 		public static readonly char Param__ = '_';
-
 
 		//label
 		public static readonly string Label_Tiles_List = "Tiles List";
@@ -78,6 +80,10 @@ namespace Constant
 		public static readonly string Label_Zones_List = "Zones List";
 		public static readonly string Label_Zones_Size = "Zones Size : ";
 		public static readonly string Label_Remove_Mode = "Remove Mode";
+		public static readonly string Label_preLabel = "preLabel";
+		public static readonly string Label_preButton = "preButton";
+		public static readonly string Label_label = "label";
+		public static readonly string Label_button = "button";
 
 		//tag
 		public static readonly string Tag_Item = "Item";
@@ -162,6 +168,11 @@ namespace Constant
 	}
 
 	public enum ItemStyle{
+		apple=0,
+		banana,
+		kiwi,
+		pear,
+		strawberry,
 		max_value,
 	}
 

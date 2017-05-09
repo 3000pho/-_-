@@ -9,6 +9,7 @@ public class DownItemAnim : StateMachineBehaviour {
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 //		Debug.Log ("down item enter");
+
 		character = animator.gameObject.GetComponent<CharMove> ();
 	}
 
@@ -20,6 +21,7 @@ public class DownItemAnim : StateMachineBehaviour {
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 //		Debug.Log ("down item exit");
+
 		if (character.state.Equals (CharState.put_down)) {
 			character.PutDown (character.item);
 			character.state = CharState.idle;

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
@@ -7,29 +8,93 @@ using Constant;
 
 [CustomEditor(typeof(MapManager))]
 public class MapManagerInspector : Editor {
+	PreviewRenderUtility previewRenderUtil = null; 
 	MapManager mapManager;
 	Texture texture = null;
+	GameObject preview = null;
 	bool isShowTileFold = false;
 	bool isShowZoneFold = false;
 
 	void OnEnable(){
-		
 		mapManager = target as MapManager;
-		if(texture == null)
-			switch (mapManager.editMode) {
-			case MapEditMode.tile_mode:
-				texture = mapManager.tileMaterials [(int) mapManager.editTileStyle].mainTexture;
-				break;
-			case MapEditMode.item_mode:
-				texture = mapManager.itemMaterials [(int)mapManager.editItemStyle].mainTexture;
-				break;
-			case MapEditMode.zone_mode:
-				break;
-			default:
-				break;
-			}
 
+//		var flags = BindingFlags.Static | BindingFlags.NonPublic;
+//		var propInfo = typeof(Camera).GetProperty (Strings.Param_PreviewCullingLayer, flags);
+//		int previewLayer = (int)propInfo.GetValue (null, new object[0]);
+
+		switch (mapManager.editMode) {
+		case MapEditMode.tile_mode:
+			if(texture == null)
+				texture = mapManager.tileMaterials [(int) mapManager.editTileStyle].mainTexture;
+			break;
+		case MapEditMode.item_mode:
+			if (preview == null) {
+				preview = mapManager.itemModels [(int)mapManager.editItemStyle];
+//				preview = Instantiate (mapManager.itemModels [(int)mapManager.editItemStyle]);
+//				preview.hideFlags = HideFlags.HideAndDontSave;
+//				preview.SetActive (false);
+//				preview.layer = previewLayer;
+//				foreach (Transform t in preview.transform) {
+//					t.gameObject.layer = previewLayer;
+//				}
+			}
+			break;
+		case MapEditMode.zone_mode:
+			break;
+		default:
+			break;
+		}
+
+		if (previewRenderUtil == null) {
+			previewRenderUtil = new PreviewRenderUtility (true);
+			previewRenderUtil.m_CameraFieldOfView = 30f;
+			previewRenderUtil.m_Camera.nearClipPlane = 0.3f;
+			previewRenderUtil.m_Camera.farClipPlane = 1000f;
+//			previewRenderUtil.m_Camera.cullingMask = 1 << previewLayer;
+		}
 	}
+
+	void OnDisable(){
+		previewRenderUtil.Cleanup ();
+		previewRenderUtil = null;
+//		if (preview)
+//			MapManager.DestroyGameObject (preview);
+		preview = null;
+	}
+
+	public override bool HasPreviewGUI(){
+		if (preview)
+			return true;
+		return false;
+	}
+
+	public override GUIContent GetPreviewTitle ()
+	{
+		return new GUIContent (Strings.Param_preview + char.ToString (Strings.Param__) + preview.name);
+	}
+
+	public override void OnPreviewGUI (Rect r, GUIStyle background)
+	{
+		previewRenderUtil.BeginPreview (r, background);
+
+		var previewCam = previewRenderUtil.m_Camera;
+		previewCam.transform.position = preview.transform.position + new Vector3 (0, 2.5f, 0);
+		previewCam.transform.LookAt (preview.transform);
+		previewCam.Render ();
+
+		previewRenderUtil.EndAndDrawPreview (r);
+	}
+
+//	public override void OnInteractivePreviewGUI (Rect r, GUIStyle background)
+//	{
+//		previewRenderUtil.BeginPreview (r, background);
+//
+////		preview.SetActive (true);
+//		previewRenderUtil.m_Camera.Render ();
+////		preview.SetActive (false);
+//
+//		previewRenderUtil.EndAndDrawPreview (r);
+//	}
 
 	public override void OnInspectorGUI ()
 	{
@@ -78,8 +143,9 @@ public class MapManagerInspector : Editor {
 		GUI.Label (new Rect (120, 50, 500, 30), Strings.Label_MapObjType + mapManager.editMapObjType);
 		GUI.color = Color.white;
 
-		if (texture)
+		if (texture) {
 			GUI.Box (new Rect (Screen.width - 200, Screen.height - 250, 150, 150), texture);
+		}
 
 //		DrawZone (mapManager);
 
@@ -126,7 +192,22 @@ public class MapManagerInspector : Editor {
 						if ((mapManager.editItemStyle <= 0 && delta < 0) || (mapManager.editItemStyle + 1 >= ItemStyle.max_value && delta > 0))
 							break;
 						mapManager.editItemStyle += delta;
-						texture = mapManager.itemMaterials [(int)mapManager.editItemStyle].mainTexture;
+						preview = mapManager.itemModels [(int)mapManager.editItemStyle];
+//						if (preview) {
+//							MapManager.DestroyGameObject (preview);
+//						}
+//						preview = Instantiate (mapManager.itemModels [(int)mapManager.editItemStyle]);
+//						preview.hideFlags = HideFlags.HideAndDontSave;
+//						preview.SetActive (false);
+//
+//						var flags = BindingFlags.Static | BindingFlags.NonPublic;
+//						var propInfo = typeof(Camera).GetProperty (Strings.Param_PreviewCullingLayer, flags);
+//						int previewLayer = (int)propInfo.GetValue (null, new object[0]);
+//
+//						preview.layer = previewLayer;
+//						foreach (Transform t in preview.transform) {
+//							t.gameObject.layer = previewLayer;
+//						}
 						break;
 					case MapEditMode.zone_mode:
 						break;
@@ -420,7 +501,7 @@ public class MapManagerInspector : Editor {
 	void DrawMaterials(MapManager mapManager){
 		serializedObject.Update ();
 		EditorList.ShowSingle (serializedObject.FindProperty (Strings.Param_tileMaterials));
-		EditorList.ShowSingle (serializedObject.FindProperty (Strings.Param_itemMaterials));
+		EditorList.ShowSingle (serializedObject.FindProperty (Strings.Param_itemModels));
 		serializedObject.ApplyModifiedProperties ();
 	}
 
@@ -466,7 +547,7 @@ public class MapManagerInspector : Editor {
 				z = mapManager.zones[0];
 				mapManager.zones.Remove (z);
 				z.RemoveAllZoneMembers ();
-				mapManager.DestroyGameObject (z.gameObject);
+				MapManager.DestroyGameObject (z.gameObject);
 			}
 		}
 

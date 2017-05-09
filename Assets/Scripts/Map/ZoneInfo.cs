@@ -65,8 +65,4 @@ public class ZoneInfo : MapObject {
 		throw new System.NotImplementedException ();
 	}
 
-	public override void SetColliders (bool enable){
-		throw new System.NotImplementedException ();
-	}
-
 }

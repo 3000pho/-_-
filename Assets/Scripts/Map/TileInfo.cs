@@ -6,11 +6,11 @@ using Constant;
 public class TileInfo : MapObject{
 	public TileStyle currentTileStyle;
 	public BoxCollider boxCollider;
-	public MeshCollider tileCollider;
 	public ItemInfo item = null;
 	public bool isWater;
 	public bool swimable;
 	protected MeshRenderer meshRenderer;
+	protected MeshCollider tileCollider;
 
 	public void UpdateMaterial(Material[] m){
 		if (meshRenderer == null || m == null)
@@ -74,25 +74,17 @@ public class TileInfo : MapObject{
 			return true;
 	}
 
-	public override void SetColliders (bool enable)
-	{
-		if (enable) {
-			UpdateType (type);
-			tileCollider.enabled = true;
-		} else {
-			tileCollider.enabled = false;
-			boxCollider.enabled = false;
-		}
-	}
-
 	void SetIsHalf(bool isHalf){
-		if (boxCollider == null)
-			return;
+		if (boxCollider == null) {
+			if(!SetMembers())
+				return;
+		}
 
-		if (isHalf)
-			boxCollider.size.Set (7.5f, 0.99f, 7.5f);
-		else
-			boxCollider.size.Set (10f, 0.99f, 10f);
+		if (isHalf) {
+			boxCollider.size = new Vector3 (7.5f, 0.99f, 7.5f);
+		} else {
+			boxCollider.size = new Vector3 (10f, 0.99f, 10f);
+		}
 	}
 
 }

@@ -5,7 +5,6 @@ using cakeslice;
 using Constant;
 
 public class CharMove : MonoBehaviour {
-	
 	public Vector3 movement;
 //	public Vector3 center;
 	public CameraMove cam;

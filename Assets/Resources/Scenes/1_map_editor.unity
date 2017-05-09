@@ -222,10 +222,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 1853701242884514, guid: df4ee14c278b8bb4eaf82648efb081df, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: df4ee14c278b8bb4eaf82648efb081df, type: 2}
   m_IsPrefabParent: 0
@@ -458,10 +454,15 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 6c8cc2afdf3d02049b71a1f5abc7ab90, type: 2}
   - {fileID: 2100000, guid: 731960bee06a1174683f3e96b29f5afb, type: 2}
   - {fileID: 2100000, guid: fb0d97085daff70438b2a95dcef13a93, type: 2}
-  itemMaterials: []
+  itemModels:
+  - {fileID: 100000, guid: 03121fe10b69e5940b4e209e1857a792, type: 3}
+  - {fileID: 100000, guid: dc18b6bd993bd5046bbfe76e4c8710b1, type: 3}
+  - {fileID: 100000, guid: 39a2fbf0a9fbe674d84bfea491bcb37c, type: 3}
+  - {fileID: 100000, guid: ed2304b5f262baa45853bbc4849c8956, type: 3}
+  - {fileID: 100000, guid: 8ba740056308be44fb3c1a070b3227c4, type: 3}
   zones: []
   editMode: 3
   editMapObjType: 8
   editTileStyle: 1
-  editItemStyle: 0
+  editItemStyle: 4
   fileName: Map

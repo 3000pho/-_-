@@ -8,5 +8,5 @@ public abstract class MapObject : MonoBehaviour{
 
 	public abstract bool SetMembers ();
 	public abstract bool UpdateType(MapObjType t);
-	public abstract void SetColliders(bool enable);
+
 }
