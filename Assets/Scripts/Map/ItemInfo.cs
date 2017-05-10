@@ -33,21 +33,27 @@ public class ItemInfo : MapObject{
 				return false;
 		}
 
+		BoxCollider box = transform.parent.GetComponent<BoxCollider> ();
+
 		switch (t) {
 		case MapObjType.item:
 			boxCollider.enabled = false;
+			box.isTrigger = true;
 			gettable = false;
 			break;
 		case MapObjType.decoration:
 			boxCollider.enabled = true;
+			box.isTrigger = true;
 			gettable = false;
 			break;
 		case MapObjType.gettable_item:
 			boxCollider.enabled = false;
+			box.isTrigger = true;
 			gettable = true;
 			break;
 		case MapObjType.obstacle:
 			boxCollider.enabled = true;
+			box.isTrigger = false;
 			gettable = false;
 			break;
 		default:

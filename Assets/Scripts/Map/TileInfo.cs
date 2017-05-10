@@ -13,8 +13,12 @@ public class TileInfo : MapObject{
 	protected MeshCollider tileCollider;
 
 	public void UpdateMaterial(Material[] m){
-		if (meshRenderer == null || m == null)
+		if (meshRenderer == null) {
+			if (!SetMembers ())
+				return;
+		} else if (m == null) {
 			return;
+		}
 
 		meshRenderer.material = m [(int)currentTileStyle];
 	}
@@ -31,25 +35,25 @@ public class TileInfo : MapObject{
 
 		switch (t) {
 		case MapObjType.floor:
-			boxCollider.enabled = false;
+			boxCollider.isTrigger = true;
 			isWater = false;
 			swimable = false;
 			SetIsHalf (false);
 			break;
 		case MapObjType.wall:
-			boxCollider.enabled = true;
+			boxCollider.isTrigger = false;
 			isWater = false;
 			swimable = false;
 			SetIsHalf (false);
 			break;
 		case MapObjType.half_wall:
-			boxCollider.enabled = true;
+			boxCollider.isTrigger = false;
 			isWater = false;
 			swimable = false;
 			SetIsHalf (true);
 			break;
 		case MapObjType.water:
-			boxCollider.enabled = false;
+			boxCollider.isTrigger = true;
 			isWater = true;
 			swimable = true;
 			SetIsHalf (false);

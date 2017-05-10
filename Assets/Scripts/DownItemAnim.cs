@@ -23,9 +23,11 @@ public class DownItemAnim : StateMachineBehaviour {
 //		Debug.Log ("down item exit");
 
 		if (character.state.Equals (CharState.put_down)) {
+			character.currTile.item = character.item;
 			character.PutDown (character.item);
 			character.state = CharState.idle;
 			character.fix = false;
+
 		}
 
 	}

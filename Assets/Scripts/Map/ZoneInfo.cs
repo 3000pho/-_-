@@ -28,6 +28,7 @@ public class ZoneInfo : MapObject {
 
 	//call if the member object located cross
 	public void AddZoneMember(Collider c){
+		c.GetComponent<BoxCollider> ().isTrigger = true;
 		c.gameObject.tag = Strings.Tag_Zone_Member;
 		c.gameObject.transform.SetParent (transform);
 		colliders.Add (c);
@@ -44,6 +45,7 @@ public class ZoneInfo : MapObject {
 
 	//if there's no child return true
 	public bool RemoveZoneMember(Collider c){
+		c.GetComponent<BoxCollider> ().isTrigger = false;
 		c.gameObject.tag = Strings.Tag_Untagged;
 		c.gameObject.transform.SetParent (transform.parent);
 		colliders.Remove (c);

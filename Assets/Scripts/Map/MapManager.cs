@@ -146,6 +146,7 @@ public class MapManager : MonoBehaviour {
 			obj = Instantiate(baseZonePrefab) as GameObject;
 			obj.name = Strings.Param_zone + zones.Count;
 			obj.transform.parent = transform;
+			obj.transform.localPosition = Vector3.zero;
 			zone = obj.GetComponent<ZoneInfo> ();
 			zone.UpdateType ((MapObjType)int.Parse (infos [0]));
 
@@ -255,6 +256,7 @@ public class MapManager : MonoBehaviour {
 				GameObject zone = Instantiate(baseZonePrefab) as GameObject;
 				zone.name = Strings.Param_zone + zones.Count;
 				zone.transform.parent = transform;
+				zone.transform.position = Vector3.zero;
 				ZoneInfo newZone = zone.GetComponent<ZoneInfo> ();
 				newZone.UpdateType (editMapObjType);
 				newZone.AddZoneMember (c);

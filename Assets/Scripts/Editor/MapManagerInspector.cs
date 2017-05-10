@@ -227,6 +227,7 @@ public class MapManagerInspector : Editor {
 
 			if (Physics.Raycast (ray, out hit, 1000f)) {
 				TileInfo tile = hit.transform.GetComponent<TileInfo> ();
+//				Debug.Log ("tile: " + tile);
 
 				if (e.button == 0) { // left click button
 					if (e.shift) { // while shift key pressed
@@ -446,7 +447,7 @@ public class MapManagerInspector : Editor {
 			for (int i = 0; i < width; ++i) {
 				for (int j = 0; j < height; ++j) {
 					Transform tile_transform = mapManager.tiles [i, j].transform;
-					textWriter.Write (Strings.GetThousandthsVector3ToString (tile_transform.position) + char.ToString (Strings.Param_tab));
+					textWriter.Write (Strings.GetThousandthsVector3ToString (tile_transform.localPosition) + char.ToString (Strings.Param_tab));
 					textWriter.Write (Strings.GetThousandthsVector3ToString (tile_transform.eulerAngles) + char.ToString (Strings.Param_tab));
 					textWriter.Write (tile_transform.tag + char.ToString (Strings.Param_tab));
 

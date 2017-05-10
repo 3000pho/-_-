@@ -9,14 +9,15 @@ public class CharMove : MonoBehaviour {
 //	public Vector3 center;
 	public CameraMove cam;
 	public CharState state;
-	public GameObject item;
-	public GameObject currTarget;
+	public ItemInfo item;
+	public TileInfo currTile;
 	public bool fix;
 
+	private ZoneInfo zone;
 	private Rigidbody rb;
 	private Animator animator;
 	private Transform equipPosition;
-	private Transform dropPosition;
+//	private Transform dropPosition;
 	//private CharacterController controller;
 	private bool isHold;
 	private float moveSpeed;
@@ -32,29 +33,22 @@ public class CharMove : MonoBehaviour {
 
 		foreach (Transform child in tempTransforms)
 		{ 
-//			if (child.name.Contains (Strings._root)) { 
-//				center = child.GetComponentInChildren<Transform> ().position;
-//				Debug.Log ("child pos : " + child.name);
-//			} else if (child.name.Contains (Strings.equip_position)) {
 			if (child.name.Contains (Strings.GameObject_equip_position)) {
 				equipPosition = child;
 //				Debug.Log ("child pos : " + child.name);
-			} else if (child.name.Contains (Strings.GameObject_drop_position)) {
-				dropPosition = child;
-//				Debug.Log ("child pos : " + child.name);
-				break;
 			}
 		}
 
-//		equipPosition = GameObject.Find (Strings.equip_position).transform;
-//		dropPosition = GameObject.Find (Strings.drop_position).transform;
+		equipPosition = GameObject.Find (Strings.GameObject_equip_position).transform;
+//		dropPosition = GameObject.Find (Strings.GameObject_drop_position).transform;
 //		center = GameObject.Find (Strings.center).transform.position;
 
 		movement = new Vector3 (0, 0, 0);
 
 		state = CharState.idle;
 		item = null;
-		currTarget = null;
+		currTile = null;
+		zone = null;
 		moveSpeed = 2f;
 		rotateSpeed = 6f;
 		holdTime = 0f;
@@ -100,7 +94,7 @@ public class CharMove : MonoBehaviour {
 			isHold = true;
 
 		if (Input.GetKeyUp(KeyCode.Z)) {
-			if (currTarget) {
+			if (currTile.item) {
 				if (item == null) {
 					state = CharState.pick_up;
 					fix = true;
@@ -108,6 +102,7 @@ public class CharMove : MonoBehaviour {
 				} else if (isHold) {
 					state = CharState.change_item;
 					fix = true;
+
 				}
 
 			} else if (item) {
@@ -142,32 +137,62 @@ public class CharMove : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-		if (other.gameObject.CompareTag(Strings.Tag_Item)){
-			if (currTarget)
-				currTarget.GetComponentInChildren<Outline> ().enabled = false;
-			currTarget = other.gameObject;
-			currTarget.GetComponentInChildren<Outline> ().enabled = true;
+		Debug.Log ("enter "+other);
 
+		if (currTile)
+			currTile.GetComponent<Outline> ().enabled = false;
+		currTile = other.GetComponent<TileInfo> ();
+		other.GetComponent<Outline> ().enabled = true;
+
+		if (other.gameObject.CompareTag (Strings.Tag_Zone_Member)) {
+			// process zones
+			if (zone == null) {
+				zone = other.transform.parent.GetComponent<ZoneInfo> ();
+
+				//start event
+				Debug.Log ("start event");
+				zone.eventDone = true;
+
+			} else if (!zone.colliders.Contains (other)) {
+				zone.eventDone = false;
+
+				zone = other.transform.parent.GetComponent<ZoneInfo> ();
+
+				//start event
+				Debug.Log("start event");
+				zone.eventDone = true;
+			}
+
+		} else {
+			// process zones
+			if (zone) {
+				zone.eventDone = false;
+				zone = null;
+			}
 		}
 	}
 
 	void OnTriggerExit(Collider other){
-		if (currTarget == other.gameObject) {
-			currTarget.GetComponentInChildren<Outline> ().enabled = false;
-			currTarget = null;
+		Debug.Log ("exit "+other);
+
+		if (currTile != null && currTile.gameObject == other.gameObject) {
+			currTile.GetComponent<Outline> ().enabled = false;
+
+			currTile = null;
 		}
 	}
 
-	public void PickUp(GameObject target){
+	public void PickUp(ItemInfo target){
 		target.transform.SetParent (equipPosition);
 		target.transform.localPosition = Vector3.zero;
 		target.transform.rotation = new Quaternion (0, 0, 0, 0);
 		item = target;
+
 	}
 
-	public void PutDown(GameObject target){
-		target.transform.SetParent (null);
-		target.transform.position = dropPosition.position;
+	public void PutDown(ItemInfo target){
+		target.transform.SetParent (currTile.transform);
+		target.transform.localPosition = new Vector3 (0, 0.49f, 0);
 		item = null;
 	}
 

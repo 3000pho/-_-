@@ -1,7 +1,7 @@
 width  8
 height  11
-(0, -0.49, 0)	(0, 0, 0)	Untagged	0	1	null
-(0, -0.49, 1)	(0, 0, 0)	Untagged	0	1	null
+(0, -0.49, 0)	(0, 0, 0)	Untagged	1	1	null
+(0, -0.49, 1)	(0, 0, 0)	Untagged	1	1	null
 (0, -0.49, 2)	(0, 0, 0)	Untagged	1	1	null
 (0, -0.49, 3)	(0, 0, 0)	Untagged	1	1	null
 (0, -0.49, 4)	(0, 0, 0)	Untagged	1	1	null
@@ -55,7 +55,7 @@ height  11
 (4, -0.49, 8)	(0, 0, 0)	Untagged	0	1	null
 (4, -0.49, 9)	(0, 0, 0)	Untagged	0	1	null
 (4, -0.49, 10)	(0, 0, 0)	Untagged	0	1	null
-(5, -0.49, 0)	(0, 0, 0)	Untagged	1	1	null
+(5, -0.49, 0)	(0, 0, 0)	Untagged	2	0	null
 (5, -0.49, 1)	(0, 0, 0)	Untagged	0	1	null
 (5, -0.49, 2)	(0, 0, 0)	Untagged	0	1	null
 (5, -0.49, 3)	(0, 0, 0)	Untagged	0	1	null
@@ -66,7 +66,7 @@ height  11
 (5, -0.49, 8)	(0, 0, 0)	Untagged	0	1	null
 (5, -0.49, 9)	(0, 0, 0)	Untagged	0	1	null
 (5, -0.49, 10)	(0, 0, 0)	Untagged	0	1	null
-(6, -0.49, 0)	(0, 0, 0)	Untagged	1	1	null
+(6, -0.49, 0)	(0, 0, 0)	Untagged	2	0	null
 (6, -0.49, 1)	(0, 0, 0)	Untagged	0	1	null
 (6, -0.49, 2)	(0, 0, 0)	Untagged	0	1	null
 (6, -0.49, 3)	(0, 0, 0)	Untagged	0	1	null
@@ -75,9 +75,9 @@ height  11
 (6, -0.49, 6)	(0, 0, 0)	Untagged	0	1	null
 (6, -0.49, 7)	(0, 0, 0)	Untagged	0	1	null
 (6, -0.49, 8)	(0, 0, 0)	Untagged	0	1	null
-(6, -0.49, 9)	(0, 0, 0)	Zone Member	0	1	null
-(6, -0.49, 10)	(0, 0, 0)	Zone Member	0	1	null
-(7, -0.49, 0)	(0, 0, 0)	Untagged	1	1	null
+(6, 0, 9)	(0, 0, 0)	Zone Member	0	0	null
+(6, 0, 10)	(0, 0, 0)	Zone Member	0	0	null
+(7, -0.49, 0)	(0, 0, 0)	Untagged	2	0	null
 (7, -0.49, 1)	(0, 0, 0)	Untagged	0	1	null
 (7, -0.49, 2)	(0, 0, 0)	Untagged	0	1	null
 (7, -0.49, 3)	(0, 0, 0)	Untagged	0	1	null
@@ -86,7 +86,7 @@ height  11
 (7, -0.49, 6)	(0, 0, 0)	Untagged	0	1	null
 (7, -0.49, 7)	(0, 0, 0)	Untagged	0	1	null
 (7, -0.49, 8)	(0, 0, 0)	Untagged	0	1	null
-(7, -0.49, 9)	(0, 0, 0)	Zone Member	0	1	null
+(7, 0, 9)	(0, 0, 0)	Zone Member	0	0	null
 (7, -0.49, 10)	(0, 0, 0)	Untagged	0	1	null
 count  1
-8	3	6_10	6_9	7_9	
+8	3	7_9	6_9	6_10	
