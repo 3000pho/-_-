@@ -16,7 +16,8 @@ public class CharMove : MonoBehaviour {
 	private ZoneInfo zone;
 	private Rigidbody rb;
 	private Animator animator;
-	private Transform equipPosition;
+    private Transform equipPosition;
+    private List<Collider> enteredTiles;
 //	private Transform dropPosition;
 	//private CharacterController controller;
 	private bool isHold;
@@ -40,10 +41,11 @@ public class CharMove : MonoBehaviour {
 		}
 
 		equipPosition = GameObject.Find (Strings.GameObject_equip_position).transform;
-//		dropPosition = GameObject.Find (Strings.GameObject_drop_position).transform;
-//		center = GameObject.Find (Strings.center).transform.position;
+        //dropPosition = GameObject.Find (Strings.GameObject_drop_position).transform;
+        //center = GameObject.Find (Strings.center).transform.position;
 
-		movement = new Vector3 (0, 0, 0);
+        movement = Vector3.zero;
+        enteredTiles = new List<Collider>();
 
 		state = CharState.idle;
 		item = null;
@@ -62,7 +64,7 @@ public class CharMove : MonoBehaviour {
 			return;
 		}
 
-		//about move
+		//move character
 		float h = Input.GetAxis (Strings.Input_Horizontal);
 		float v = Input.GetAxis (Strings.Input_Vertical);
 		movement.Set (h, 0.0f, v);
@@ -89,7 +91,10 @@ public class CharMove : MonoBehaviour {
 
 		}
 
-		//about item
+        //change tile
+        SetCurrentTile();
+
+		//interact item
 		if(Input.GetKey (KeyCode.Z) && (holdTime += Time.fixedDeltaTime) > 0.5f)
 			isHold = true;
 
@@ -138,51 +143,18 @@ public class CharMove : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other){
 		Debug.Log ("enter "+other);
-
-		if (currTile)
-			currTile.GetComponent<Outline> ().enabled = false;
-		currTile = other.GetComponent<TileInfo> ();
-		other.GetComponent<Outline> ().enabled = true;
-
-		if (other.gameObject.CompareTag (Strings.Tag_Zone_Member)) {
-			// process zones
-			if (zone == null) {
-				zone = other.transform.parent.GetComponent<ZoneInfo> ();
-
-				//start event
-				Debug.Log ("start event");
-				zone.eventDone = true;
-
-			} else if (!zone.colliders.Contains (other)) {
-				zone.eventDone = false;
-
-				zone = other.transform.parent.GetComponent<ZoneInfo> ();
-
-				//start event
-				Debug.Log("start event");
-				zone.eventDone = true;
-			}
-
-		} else {
-			// process zones
-			if (zone) {
-				zone.eventDone = false;
-				zone = null;
-			}
-		}
+        enteredTiles.Add(other);
+        
 	}
 
+    
 	void OnTriggerExit(Collider other){
 		Debug.Log ("exit "+other);
+        enteredTiles.Remove(other);
 
-		if (currTile != null && currTile.gameObject == other.gameObject) {
-			currTile.GetComponent<Outline> ().enabled = false;
-
-			currTile = null;
-		}
 	}
 
-	public void PickUp(ItemInfo target){
+    public void PickUp(ItemInfo target){
 		target.transform.SetParent (equipPosition);
 		target.transform.localPosition = Vector3.zero;
 		target.transform.rotation = new Quaternion (0, 0, 0, 0);
@@ -195,6 +167,75 @@ public class CharMove : MonoBehaviour {
 		target.transform.localPosition = new Vector3 (0, 0.49f, 0);
 		item = null;
 	}
+
+    void SetCurrentTile()
+    {
+        if (enteredTiles.Count <= 0)
+        {
+            return;
+        }
+
+        //find the nearest one
+        Collider nearest = enteredTiles[0];
+        float dis = Vector3.Distance(transform.position, nearest.transform.position);
+        float other_dis;
+
+        for (int i = 1; i < enteredTiles.Count; i++)
+        {
+            other_dis = Vector3.Distance(transform.position, enteredTiles[i].transform.position);
+            if (dis > other_dis)
+            {
+                dis = other_dis;
+                nearest = enteredTiles[i];
+            }
+
+        }
+
+        //change current tile
+        if (currTile == null || !currTile.boxCollider.Equals(nearest))
+        {
+            if (currTile)
+                currTile.GetComponent<Outline>().enabled = false;
+            currTile = nearest.GetComponent<TileInfo>();
+            nearest.GetComponent<Outline>().enabled = true;
+
+            // 1. enter the zone -> start event
+            // 2. after the zone's event -> enter the another zone
+            // 3. after the zone's event -> enter the non zone
+            if (nearest.gameObject.CompareTag(Strings.Tag_Zone_Member))
+            {
+                if (zone == null)
+                {
+                    zone = nearest.transform.parent.GetComponent<ZoneInfo>();
+
+                    //start event
+                    Debug.Log("start event");
+                    zone.eventDone = true;
+
+                }
+                else if (!zone.colliders.Contains(nearest))
+                {
+                    zone.eventDone = false;
+
+                    zone = nearest.transform.parent.GetComponent<ZoneInfo>();
+
+                    //start event
+                    Debug.Log("start event");
+                    zone.eventDone = true;
+                }
+
+            }
+            else
+            {
+                if (zone)
+                {
+                    zone.eventDone = false;
+                    zone = null;
+                }
+            }
+        }
+        
+    }
 
 //	IEnumerator waitForTransition(bool value) {
 //		yield return new WaitForEndOfFrame();

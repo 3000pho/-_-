@@ -1,13 +1,13 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{CE3E83FA-248E-9E8E-69C1-FD831E052146}") = "wandering cooks", "Assembly-CSharp-firstpass.csproj", "{E37DD764-9B5C-3C5B-F8C8-187A66F3D21F}"
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wandering cooks", "Assembly-CSharp-firstpass.csproj", "{E37DD764-9B5C-3C5B-F8C8-187A66F3D21F}"
 EndProject
-Project("{CE3E83FA-248E-9E8E-69C1-FD831E052146}") = "wandering cooks", "Assembly-CSharp.csproj", "{1D030B6D-1FD1-56D3-CADE-84083206A7E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wandering cooks", "Assembly-CSharp.csproj", "{1D030B6D-1FD1-56D3-CADE-84083206A7E7}"
 EndProject
-Project("{CE3E83FA-248E-9E8E-69C1-FD831E052146}") = "wandering cooks", "Assembly-CSharp-Editor-firstpass.csproj", "{8950D528-1B09-4082-F3F1-DD051FED1519}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wandering cooks", "Assembly-CSharp-Editor-firstpass.csproj", "{8950D528-1B09-4082-F3F1-DD051FED1519}"
 EndProject
-Project("{CE3E83FA-248E-9E8E-69C1-FD831E052146}") = "wandering cooks", "Assembly-CSharp-Editor.csproj", "{9C4D70DF-0C32-2EB1-9BB5-F0ACCF23479B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wandering cooks", "Assembly-CSharp-Editor.csproj", "{9C4D70DF-0C32-2EB1-9BB5-F0ACCF23479B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,6 +9,7 @@ TagManager:
   - Portal
   - Auto Save
   - Event
+  - Map
   layers:
   - Default
   - TransparentFX
