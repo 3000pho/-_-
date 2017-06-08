@@ -10,6 +10,10 @@ namespace Constant
 		public static readonly string GameObject_drop_position = "drop_position";
 		public static readonly string GameObject__root = "_root";
 		public static readonly string GameObject_center = "center";
+		public static readonly string GameObject_PanelItems = "PanelItems";
+		public static readonly string GameObject_PanelCursor = "PanelCurosr";
+		public static readonly string GameObject_PanelCurrent = "PanelCurrent";
+		public static readonly string GameObject_ImageCursor = "ImageCursor";
 
 		//input
 		public static readonly string Input_Horizontal = "Horizontal";
@@ -117,7 +121,7 @@ namespace Constant
 	}
 		
 	//character's animation parameter state
-	public enum CharState
+	public enum PlayerState
 	{
 		idle = 0,
 		walk,

@@ -4,13 +4,13 @@ using UnityEngine;
 using Constant;
 
 public class UpItemAnim : StateMachineBehaviour {
-	private CharMove character;
+	private PlayerMove character;
 
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 //		Debug.Log ("up item enter");
 
-		character = animator.gameObject.GetComponent<CharMove> ();
+		character = animator.gameObject.GetComponent<PlayerMove> ();
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -23,10 +23,10 @@ public class UpItemAnim : StateMachineBehaviour {
 //		Debug.Log ("up item exit");
 		ItemInfo to = null;
 
-		if(character.state.Equals(CharState.change_item)) {
+		if(character.state.Equals(PlayerState.change_item)) {
 			to = character.item;
 			character.PutDown (character.item);
-			character.state = CharState.pick_up;
+			character.state = PlayerState.pick_up;
 
 		}
 
