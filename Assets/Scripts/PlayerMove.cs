@@ -7,53 +7,55 @@ using Constant;
 
 public class PlayerMove : MonoBehaviour
 {
-	public GameObject player;
-	public Transform PanelInventory;
 	public CameraMove cam;
+	public Image holdProgress;
+	public Transform PanelInventory;
+	public Image[,] inventoryImage;
+	public Image cursor;
+	public Image cursorImage;
+	public Text cursorText;
+	public Image currentImage;
+	public Text currentText;
 
 	public Vector3 movement;
 	public PlayerState state;
 	public ItemInfo item;
 	public TileInfo currTile;
-	public Image holdProgress;
 	public bool fix;
 
 	private Transform equipPosition;
 	private List<Collider> enteredTiles;
-	private Image[,] inventoryImage;
-	private Image cursor;
-	private Image cursorImage;
-	private Text cursorText;
-	private Image currentImage;
-	private Text currentText;
 
 	private ZoneInfo zone;
 	private ItemInfo targetItem;
 	private ItemInfo[,] inventory;
 	private Rigidbody rb;
 	private Animator animator;
+	private PlayerState prevState;
 
 	private bool isHold;
 	private float moveSpeed;
 	private float rotateSpeed;
 	private float holdTime;
+	private float minInvenMove;
+	private float deltaTime;
+	private int currentCursorX;
+	private int currentCursorY;
 
 	// Use this for initialization
 	void Start()
 	{
 		//initialize
 		cam.target = this;
-		rb = player.GetComponent<Rigidbody>();
-		animator = player.GetComponent<Animator>();
-		//controller = GetComponent<CharacterController> ();
-		Transform[] tempTransforms = player.GetComponentsInChildren<Transform>();
+		rb = GetComponent<Rigidbody>();
+		animator = GetComponent<Animator>();
+		Transform[] tempTransforms = GetComponentsInChildren<Transform>();
 
 		foreach (Transform child in tempTransforms)
 		{
 			if (child.name.Contains(Strings.GameObject_equip_position))
 			{
 				equipPosition = child;
-				//				Debug.Log ("child pos : " + child.name);
 			}
 		}
 
@@ -70,20 +72,18 @@ public class PlayerMove : MonoBehaviour
 			if (panel.name.Contains (Strings.GameObject_PanelItems)) {
 				foreach (Transform button in panel) {
 					infos = button.name.Substring (6).Split (Strings.Param__);
-					Debug.Log ("infos:"+infos[0]+","+infos[1]);
-					inventoryImage [int.Parse (infos [0]), int.Parse (infos [1])] = button.GetComponentInChildren<Image> ();
+					int x = int.Parse (infos [1]);
+					int y = int.Parse (infos [0]);
+
+					button.GetComponent<Button> ().onClick.AddListener (
+						delegate {
+							SetCursor (x, y);
+						}
+					);
+
+					inventoryImage [y, x] = button.GetChild(0).GetComponent<Image> ();
 				}
 
-			} else if (panel.name.Contains (Strings.GameObject_PanelCursor)) {
-				cursorImage = panel.GetComponentInChildren<Image> ();
-				cursorText = panel.GetComponentInChildren<Text> ();
-
-			} else if (panel.name.Contains (Strings.GameObject_PanelCurrent)) {
-				currentImage = panel.GetComponentInChildren<Image> ();
-				currentText = panel.GetComponentInChildren<Text> ();
-
-			} else if (panel.name.Contains (Strings.GameObject_ImageCursor)) {
-				cursor = panel.GetComponent<Image> ();
 			}
 
 		}
@@ -98,6 +98,10 @@ public class PlayerMove : MonoBehaviour
 		holdTime = 0f;
 		isHold = false;
 		fix = false;
+		currentCursorX = 0;
+		currentCursorY = 0;
+		minInvenMove = 0.2f;
+		deltaTime = minInvenMove;
 
 		//load
 
@@ -110,96 +114,124 @@ public class PlayerMove : MonoBehaviour
 			return;
 		}
 
-		//move character
 		float h = Input.GetAxis(Strings.Input_Horizontal);
 		float v = Input.GetAxis(Strings.Input_Vertical);
-		movement.Set(h, 0.0f, v);
-		//rotate input based camera's direction
-		movement = cam.camDir * movement;
-		movement *= moveSpeed * Time.fixedDeltaTime;
 
-		//movements exists
-		if (movement.magnitude != 0)
-		{
-			if (state.Equals(PlayerState.idle))
-				state = PlayerState.walk;
-			else if (state.Equals(PlayerState.pick_up))
-				state = PlayerState.walk_during_up_item;
+		if (state.Equals (PlayerState.inventory)) {
+			
+			deltaTime += Time.fixedDeltaTime;
 
-			//movement = Vector3.Slerp (transform.forward, movement, 0.99f);
+			if (h == 0f && v == 0f)
+				return;
+			else if (deltaTime > minInvenMove) {
+				int deltaX = 0;
+				int deltaY = 0;
+				if (h > 0)
+					deltaX = 1;
+				else if (h < 0)
+					deltaX = -1;
+				if (v > 0)
+					deltaY = -1;
+				else if (v < 0)
+					deltaY = 1;
+				
+				if ((deltaX > 0 && currentCursorX < 2) || (deltaX < 0 && currentCursorX > 0)) {
+					currentCursorX += deltaX;
+				}
+				if ((deltaY > 0 && currentCursorY < 4) || (deltaY < 0 && currentCursorY > 0)) {
+					currentCursorY += deltaY;
+				}
 
-			Walk(movement);
+				cursor.transform.SetParent (inventoryImage [currentCursorY, currentCursorX].transform.parent);
+				Vector3 tmp = cursor.rectTransform.localPosition;
+				tmp.x = 25f;
+				tmp.y = 25f;
+				cursor.rectTransform.localPosition = tmp;
 
-		}
-		else
-		{
-			if (state.Equals(PlayerState.walk))
-				state = PlayerState.idle;
-			else if (state.Equals(PlayerState.walk_during_up_item))
-				state = PlayerState.pick_up;
-
-		}
-
-		//change tile
-		SetCurrentTile();
-
-		//interact item
-		if (Input.GetKey(KeyCode.Z)) {
-			holdTime += Time.fixedDeltaTime;
-			holdProgress.fillAmount = holdTime / 0.5f;
-
-			if (holdTime > 0.5f)
-			{
-				isHold = true;
+				deltaTime = 0;
 			}
-		}
 
-		if (Input.GetKeyUp(KeyCode.Z))
-		{
-			if (targetItem)
-			{
-				if (targetItem.gettable)
-				{
-					if(item == null)
-					{
-						if (isHold)
-						{
-							state = PlayerState.get_item;
+		} else {
+			//move character
+			movement.Set (h, 0.0f, v);
+			//rotate input based camera's direction
+			movement = cam.camDir * movement;
+			movement *= moveSpeed * Time.fixedDeltaTime;
+
+			//movements exists
+			if (movement.magnitude != 0) {
+				if (state.Equals (PlayerState.idle))
+					state = PlayerState.walk;
+				else if (state.Equals (PlayerState.pick_up))
+					state = PlayerState.walk_during_up_item;
+
+				//movement = Vector3.Slerp (transform.forward, movement, 0.99f);
+
+				Walk (movement);
+
+			} else {
+				if (state.Equals (PlayerState.walk))
+					state = PlayerState.idle;
+				else if (state.Equals (PlayerState.walk_during_up_item))
+					state = PlayerState.pick_up;
+
+			}
+
+			//change tile
+			SetCurrentTile ();
+
+			//interact item
+			if (Input.GetKey (KeyCode.Z)) {
+				holdTime += Time.fixedDeltaTime;
+				holdProgress.fillAmount = holdTime / 0.5f;
+
+				if (holdTime > 0.5f) {
+					isHold = true;
+				}
+			}
+
+			if (Input.GetKeyUp (KeyCode.Z)) {
+				if (targetItem) {
+					if (targetItem.gettable) {
+						if (item == null) {
+							if (isHold) {
+								state = PlayerState.get_item;
+								fix = true;
+								targetItem.UpdateType (MapObjType.item);
+							}
+						}
+
+					} else {
+						if (item == null) {
+							state = PlayerState.pick_up;
 							fix = true;
-							targetItem.UpdateType(MapObjType.item);
+						} else if (isHold) {
+							state = PlayerState.change_item;
+							fix = true;
 						}
 					}
-
-				}else
-				{
-					if (item == null)
-					{
-						state = PlayerState.pick_up;
-						fix = true;
-					}
-					else if (isHold)
-					{
-						state = PlayerState.change_item;
-						fix = true;
-					}
-				}
 				
 
-			}
-			else if (item)
-			{
-				state = PlayerState.put_down;
-				fix = true;
-			}
+				} else if (item) {
+					state = PlayerState.put_down;
+					fix = true;
+				}
 
-			holdTime = 0f;
-			isHold = false;
-			holdProgress.fillAmount = 0f;
+				holdTime = 0f;
+				isHold = false;
+				holdProgress.fillAmount = 0f;
+			}
 		}
 
 		//inventory
 		if (Input.GetKeyUp (KeyCode.F)) {
 			PanelInventory.gameObject.SetActive (!PanelInventory.gameObject.activeSelf);
+			if (PanelInventory.gameObject.activeSelf) {
+				prevState = state;
+				state = PlayerState.inventory;
+			} else {
+				state = prevState;
+			}
 		}
 
 		animator.SetInteger(Strings.Param_state, (int)state);
@@ -207,7 +239,7 @@ public class PlayerMove : MonoBehaviour
 
 	void Walk(Vector3 movement)
 	{
-		rb.MovePosition(player.transform.position + movement);
+		rb.MovePosition(transform.position + movement);
 		//change directions
 		Quaternion newRotate = Quaternion.LookRotation(movement);
 		rb.MoveRotation(Quaternion.Slerp(rb.rotation, newRotate, rotateSpeed * Time.fixedDeltaTime));
@@ -217,7 +249,7 @@ public class PlayerMove : MonoBehaviour
 	//check next moves are forward => -90~90
 	public bool CheckIsForward(Vector3 movement)
 	{
-		Vector3 diff = player.transform.forward - movement;
+		Vector3 diff = transform.forward - movement;
 		float angle = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
 
 		if (angle > -90 && angle < 90)
@@ -266,12 +298,12 @@ public class PlayerMove : MonoBehaviour
 
 		//find the nearest one
 		Collider nearest = enteredTiles[0];
-		float dis = Vector3.Distance(player.transform.position, nearest.transform.position);
+		float dis = Vector3.Distance(transform.position, nearest.transform.position);
 		float other_dis;
 
 		for (int i = 1; i < enteredTiles.Count; i++)
 		{
-			other_dis = Vector3.Distance(player.transform.position, enteredTiles[i].transform.position);
+			other_dis = Vector3.Distance(transform.position, enteredTiles[i].transform.position);
 			if (dis > other_dis)
 			{
 				dis = other_dis;
@@ -326,8 +358,18 @@ public class PlayerMove : MonoBehaviour
 					zone = null;
 				}
 			}
-		}
+		} 
 
+	}
+
+	public void SetCursor(int x, int y){
+		currentCursorX = x;
+		currentCursorY = y;
+		cursor.transform.SetParent (inventoryImage [currentCursorY, currentCursorX].transform.parent);
+		Vector3 tmp = cursor.rectTransform.localPosition;
+		tmp.x = 25f;
+		tmp.y = 25f;
+		cursor.rectTransform.localPosition = tmp;
 	}
 
 	//	IEnumerator waitForTransition(bool value) {

@@ -130,6 +130,7 @@ namespace Constant
 		change_item,
 		walk_during_up_item,
 		put_down,
+		inventory,
 	}
 
 	public enum MapEditMode{

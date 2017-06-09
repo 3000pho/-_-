@@ -490,7 +490,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -215, y: 40}
+  m_AnchoredPosition: {x: -215, y: 25}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &71356976
@@ -908,55 +908,6 @@ Transform:
   m_Father: {fileID: 1701230575}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &179025773
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 179025775}
-  - component: {fileID: 179025774}
-  m_Layer: 0
-  m_Name: Player Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &179025774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 179025773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7a873e030b633448aff782999a18b06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1149621882}
-  PanelInventory: {fileID: 1472496659}
-  cam: {fileID: 1680823805}
-  movement: {x: 0, y: 0, z: 0}
-  state: 0
-  item: {fileID: 0}
-  currTile: {fileID: 0}
-  holdProgress: {fileID: 1893119204}
-  fix: 0
---- !u!4 &179025775
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 179025773}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.7711444, y: 0.26350182, z: 3.89131}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &182712481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,7 +983,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 182712484}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1149621882}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &182712484
@@ -1410,7 +1372,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -215, y: 40}
+  m_AnchoredPosition: {x: -215, y: 30}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &208750641
@@ -2712,12 +2674,12 @@ RectTransform:
   - {fileID: 208750640}
   - {fileID: 420232388}
   m_Father: {fileID: 1472496659}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 135, y: -105}
-  m_SizeDelta: {x: -470, y: -450}
+  m_AnchoredPosition: {x: 135, y: -90}
+  m_SizeDelta: {x: -470, y: -420}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &329426245
 MonoBehaviour:
@@ -2929,7 +2891,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 55, y: 0}
-  m_SizeDelta: {x: 400, y: 180}
+  m_SizeDelta: {x: 400, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &332651926
 MonoBehaviour:
@@ -4110,7 +4072,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 55, y: 0}
-  m_SizeDelta: {x: 400, y: 180}
+  m_SizeDelta: {x: 400, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &420232389
 MonoBehaviour:
@@ -10552,6 +10514,7 @@ GameObject:
   - component: {fileID: 1149621883}
   - component: {fileID: 1149621886}
   - component: {fileID: 1149621885}
+  - component: {fileID: 1149621884}
   m_Layer: 0
   m_Name: Yuko_SchoolUniform_summer
   m_TagString: Untagged
@@ -10577,6 +10540,30 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &1149621884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1149621882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7a873e030b633448aff782999a18b06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 1680823805}
+  holdProgress: {fileID: 1893119204}
+  PanelInventory: {fileID: 1472496659}
+  cursor: {fileID: 1598616329}
+  cursorImage: {fileID: 71356976}
+  cursorText: {fileID: 332651926}
+  currentImage: {fileID: 208750641}
+  currentText: {fileID: 420232389}
+  movement: {x: 0, y: 0, z: 0}
+  state: 0
+  item: {fileID: 0}
+  currTile: {fileID: 0}
+  fix: 0
 --- !u!65 &1149621885
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13814,7 +13801,6 @@ RectTransform:
   m_LocalScale: {x: 0.964296, y: 0.9362239, z: 1}
   m_Children:
   - {fileID: 1911786047}
-  - {fileID: 1598616328}
   - {fileID: 2045421387}
   - {fileID: 329426244}
   m_Father: {fileID: 816790894}
@@ -14949,7 +14935,8 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1598616328}
   m_Father: {fileID: 1727387685}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15396,16 +15383,16 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1598616327}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1472496659}
-  m_RootOrder: 1
+  m_Father: {fileID: 1524873939}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -372.6, y: 180.5}
+  m_AnchoredPosition: {x: 25, y: 25}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1598616329
@@ -15462,7 +15449,7 @@ Transform:
   m_PrefabParentObject: {fileID: 433916, guid: 6df88c39ad7e92a4ba7a81ef191efd5e, type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1604554435}
-  m_LocalRotation: {x: -0.0059114257, y: -0.6794483, z: 0.73369926, w: -0.0006656347}
+  m_LocalRotation: {x: -0.00591142, y: -0.6794483, z: 0.73369926, w: -0.0006656347}
   m_LocalPosition: {x: -0.14276123, y: 0.032653574, z: 0.13977996}
   m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
   m_Children: []
@@ -16783,7 +16770,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1727387687}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1149621884}
+        m_MethodName: SetCursor
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1727387687
@@ -18542,7 +18540,7 @@ GameObject:
   - component: {fileID: 1893119205}
   - component: {fileID: 1893119204}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: SliderHold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19786,12 +19784,12 @@ RectTransform:
   - {fileID: 71356975}
   - {fileID: 332651925}
   m_Father: {fileID: 1472496659}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 135, y: 125}
-  m_SizeDelta: {x: -470, y: -450}
+  m_AnchoredPosition: {x: 135, y: 115}
+  m_SizeDelta: {x: -470, y: -430}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2045421388
 MonoBehaviour:
