@@ -23,24 +23,26 @@ public class PlayerMove : MonoBehaviour
 	public TileInfo currTile;
 	public bool fix;
 
-	private Transform equipPosition;
-	private List<Collider> enteredTiles;
+	Transform equipPosition;
+	List<Collider> enteredTiles;
 
-	private ZoneInfo zone;
-	private ItemInfo targetItem;
-	private ItemInfo[,] inventory;
-	private Rigidbody rb;
-	private Animator animator;
-	private PlayerState prevState;
+	ZoneInfo zone;
+	ItemInfo targetItem;
+	ItemInfo[,] inventory;
+	Rigidbody rb;
+	Animator animator;
+	PlayerState prevState;
 
-	private bool isHold;
-	private float moveSpeed;
-	private float rotateSpeed;
-	private float holdTime;
-	private float minInvenMove;
-	private float deltaTime;
-	private int currentCursorX;
-	private int currentCursorY;
+	bool isHold;
+	float moveSpeed;
+	float rotateSpeed;
+	float holdTime;
+	float minInvenMove;
+	float inputTime;
+	int[] currentCursor;
+	int[] deltaXY;
+	int deltaIndex;
+	int prevIndex;
 
 	// Use this for initialization
 	void Start()
@@ -66,6 +68,8 @@ public class PlayerMove : MonoBehaviour
 
 		inventory = new ItemInfo[5,3];
 		inventoryImage = new Image[5,3];
+		currentCursor = new int[2]{0, 0};
+		deltaXY = new int[2];
 
 		string[] infos;
 		foreach (Transform panel in PanelInventory) {
@@ -98,10 +102,8 @@ public class PlayerMove : MonoBehaviour
 		holdTime = 0f;
 		isHold = false;
 		fix = false;
-		currentCursorX = 0;
-		currentCursorY = 0;
-		minInvenMove = 0.2f;
-		deltaTime = minInvenMove;
+		minInvenMove = 0.15f;
+		inputTime = minInvenMove;
 
 		//load
 
@@ -118,37 +120,51 @@ public class PlayerMove : MonoBehaviour
 		float v = Input.GetAxis(Strings.Input_Vertical);
 
 		if (state.Equals (PlayerState.inventory)) {
-			
-			deltaTime += Time.fixedDeltaTime;
+			Debug.Log ("h,v: "+h+","+v);
 
-			if (h == 0f && v == 0f)
-				return;
-			else if (deltaTime > minInvenMove) {
-				int deltaX = 0;
-				int deltaY = 0;
-				if (h > 0)
-					deltaX = 1;
-				else if (h < 0)
-					deltaX = -1;
-				if (v > 0)
-					deltaY = -1;
-				else if (v < 0)
-					deltaY = 1;
+			if (h == 0f && v == 0f) {
+				if (inputTime < minInvenMove)
+					inputTime = minInvenMove;
 				
-				if ((deltaX > 0 && currentCursorX < 2) || (deltaX < 0 && currentCursorX > 0)) {
-					currentCursorX += deltaX;
-				}
-				if ((deltaY > 0 && currentCursorY < 4) || (deltaY < 0 && currentCursorY > 0)) {
-					currentCursorY += deltaY;
+			} else {
+				if (Mathf.Abs (h) > Mathf.Abs (v)) {
+					deltaIndex = 0;
+					inputTime += Time.fixedDeltaTime * Mathf.Abs (h);
+				} else {
+					deltaIndex = 1;
+					inputTime += Time.fixedDeltaTime * Mathf.Abs (v);
 				}
 
-				cursor.transform.SetParent (inventoryImage [currentCursorY, currentCursorX].transform.parent);
-				Vector3 tmp = cursor.rectTransform.localPosition;
-				tmp.x = 25f;
-				tmp.y = 25f;
-				cursor.rectTransform.localPosition = tmp;
+				if (inputTime > minInvenMove || prevIndex != deltaIndex) {
+					if (deltaIndex == 0) {
+						if (h > 0) {
+							deltaXY [0] = 1;
+						} else {
+							deltaXY [0] = -1;
+						}
+					} else {
+						if (v > 0) {
+							deltaXY [1] = -1;
+						} else {
+							deltaXY [1] = 1;
+						}
+					}
 
-				deltaTime = 0;
+					if ((deltaXY [deltaIndex] > 0 && currentCursor [deltaIndex] < Constant.Numbers.maxInventoryIndex [deltaIndex] - 1)
+					  || (deltaXY [deltaIndex] < 0 && currentCursor [deltaIndex] > 0)) {
+						currentCursor [deltaIndex] += deltaXY [deltaIndex];
+					}
+
+					cursor.transform.SetParent (inventoryImage [currentCursor [1], currentCursor [0]].transform.parent);
+					Vector3 tmp = cursor.rectTransform.localPosition;
+					tmp.x = 25f;
+					tmp.y = 25f;
+					cursor.rectTransform.localPosition = tmp;
+
+					inputTime = 0;
+					prevIndex = deltaIndex;
+				}
+
 			}
 
 		} else {
@@ -363,9 +379,9 @@ public class PlayerMove : MonoBehaviour
 	}
 
 	public void SetCursor(int x, int y){
-		currentCursorX = x;
-		currentCursorY = y;
-		cursor.transform.SetParent (inventoryImage [currentCursorY, currentCursorX].transform.parent);
+		currentCursor [0] = x;
+		currentCursor [1] = y;
+		cursor.transform.SetParent (inventoryImage [currentCursor [1], currentCursor [0]].transform.parent);
 		Vector3 tmp = cursor.rectTransform.localPosition;
 		tmp.x = 25f;
 		tmp.y = 25f;

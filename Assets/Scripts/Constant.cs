@@ -119,7 +119,11 @@ namespace Constant
 		}
 
 	}
-		
+
+	public struct Numbers{
+		public static int[] maxInventoryIndex = new int[2]{3, 5}; // x, y
+	}
+
 	//character's animation parameter state
 	public enum PlayerState
 	{
