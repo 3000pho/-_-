@@ -55,12 +55,14 @@
      <Compile Include="Assets\Scripts\CameraMove.cs" />
      <Compile Include="Assets\Scripts\Constant.cs" />
      <Compile Include="Assets\Scripts\DownItemAnim.cs" />
+     <Compile Include="Assets\Scripts\Inventory.cs" />
      <Compile Include="Assets\Scripts\Map\ItemInfo.cs" />
      <Compile Include="Assets\Scripts\Map\MapManager.cs" />
      <Compile Include="Assets\Scripts\Map\MapObject.cs" />
      <Compile Include="Assets\Scripts\Map\TileInfo.cs" />
      <Compile Include="Assets\Scripts\Map\ZoneInfo.cs" />
      <Compile Include="Assets\Scripts\PlayerMove.cs" />
+     <Compile Include="Assets\Scripts\PutItemAnim.cs" />
      <Compile Include="Assets\Scripts\UpItemAnim.cs" />
      <None Include="Assets\Optimize_SDKohaku-Chanz\Shader\Unitychan_chara_eye.shader" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />

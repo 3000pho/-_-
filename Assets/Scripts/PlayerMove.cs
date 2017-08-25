@@ -10,12 +10,6 @@ public class PlayerMove : MonoBehaviour
 	public CameraMove cam;
 	public Image holdProgress;
 	public Transform PanelInventory;
-	public Image[,] inventoryImage;
-	public Image cursor;
-	public Image cursorImage;
-	public Text cursorText;
-	public Image currentImage;
-	public Text currentText;
 
 	public Vector3 movement;
 	public PlayerState state;
@@ -26,9 +20,10 @@ public class PlayerMove : MonoBehaviour
 	Transform equipPosition;
 	List<Collider> enteredTiles;
 
+	Inventory inventory;
 	ZoneInfo zone;
 	ItemInfo targetItem;
-	ItemInfo[,] inventory;
+
 	Rigidbody rb;
 	Animator animator;
 	PlayerState prevState;
@@ -37,14 +32,8 @@ public class PlayerMove : MonoBehaviour
 	float moveSpeed;
 	float rotateSpeed;
 	float holdTime;
-	float minInvenMove;
-	float inputTime;
-	int[] currentCursor;
-	int[] deltaXY;
-	int deltaIndex;
-	int prevIndex;
 
-	// Use this for initialization
+
 	void Start()
 	{
 		//initialize
@@ -65,15 +54,11 @@ public class PlayerMove : MonoBehaviour
 		enteredTiles = new List<Collider>();
 		if(holdProgress)
 			holdProgress.fillAmount = 0f;
-
-		inventory = new ItemInfo[5,3];
-		inventoryImage = new Image[5,3];
-		currentCursor = new int[2]{0, 0};
-		deltaXY = new int[2];
+		inventory = new Inventory ();
 
 		string[] infos;
 		foreach (Transform panel in PanelInventory) {
-			if (panel.name.Contains (Strings.GameObject_PanelItems)) {
+			if (panel.name.Equals (Strings.GameObject_PanelItems)) {
 				foreach (Transform button in panel) {
 					infos = button.name.Substring (6).Split (Strings.Param__);
 					int x = int.Parse (infos [1]);
@@ -81,15 +66,26 @@ public class PlayerMove : MonoBehaviour
 
 					button.GetComponent<Button> ().onClick.AddListener (
 						delegate {
-							SetCursor (x, y);
+							inventory.SetCursor (x, y);
 						}
 					);
 
-					inventoryImage [y, x] = button.GetChild(0).GetComponent<Image> ();
+					inventory.invenImage [y, x] = button.GetChild (0).GetComponent<Image> ();
+					if (inventory.cursor == null) {
+						Transform t = button.GetChild (0).GetChild (0);
+						if (t != null) {
+							inventory.cursor = t.GetComponent<Image> ();
+						}
+					}
 				}
 
+			} else if (panel.name.Equals (Strings.GameObject_PanelCursor)) {
+				inventory.cursorImage = panel.GetChild (0).GetComponent<Image> ();
+				inventory.cursorText = panel.GetChild (1).GetComponent<Text> ();
+			} else if (panel.name.Equals (Strings.GameObject_PanelCurrent)) {
+				inventory.currentImage = panel.GetChild (0).GetComponent<Image> ();
+				inventory.currentText = panel.GetChild (1).GetComponent<Text> ();
 			}
-
 		}
 
 		state = PlayerState.idle;
@@ -102,8 +98,6 @@ public class PlayerMove : MonoBehaviour
 		holdTime = 0f;
 		isHold = false;
 		fix = false;
-		minInvenMove = 0.15f;
-		inputTime = minInvenMove;
 
 		//load
 
@@ -121,51 +115,7 @@ public class PlayerMove : MonoBehaviour
 
 		if (state.Equals (PlayerState.inventory)) {
 			Debug.Log ("h,v: "+h+","+v);
-
-			if (h == 0f && v == 0f) {
-				if (inputTime < minInvenMove)
-					inputTime = minInvenMove;
-				
-			} else {
-				if (Mathf.Abs (h) > Mathf.Abs (v)) {
-					deltaIndex = 0;
-					inputTime += Time.fixedDeltaTime * Mathf.Abs (h);
-				} else {
-					deltaIndex = 1;
-					inputTime += Time.fixedDeltaTime * Mathf.Abs (v);
-				}
-
-				if (inputTime > minInvenMove || prevIndex != deltaIndex) {
-					if (deltaIndex == 0) {
-						if (h > 0) {
-							deltaXY [0] = 1;
-						} else {
-							deltaXY [0] = -1;
-						}
-					} else {
-						if (v > 0) {
-							deltaXY [1] = -1;
-						} else {
-							deltaXY [1] = 1;
-						}
-					}
-
-					if ((deltaXY [deltaIndex] > 0 && currentCursor [deltaIndex] < Constant.Numbers.maxInventoryIndex [deltaIndex] - 1)
-					  || (deltaXY [deltaIndex] < 0 && currentCursor [deltaIndex] > 0)) {
-						currentCursor [deltaIndex] += deltaXY [deltaIndex];
-					}
-
-					cursor.transform.SetParent (inventoryImage [currentCursor [1], currentCursor [0]].transform.parent);
-					Vector3 tmp = cursor.rectTransform.localPosition;
-					tmp.x = 25f;
-					tmp.y = 25f;
-					cursor.rectTransform.localPosition = tmp;
-
-					inputTime = 0;
-					prevIndex = deltaIndex;
-				}
-
-			}
+			inventory.MoveCursor (h, v);
 
 		} else {
 			//move character
@@ -209,7 +159,9 @@ public class PlayerMove : MonoBehaviour
 			if (Input.GetKeyUp (KeyCode.Z)) {
 				if (targetItem) {
 					if (targetItem.gettable) {
-						if (item == null) {
+						if (item) {
+							// unable to get item message
+						} else {
 							if (isHold) {
 								state = PlayerState.get_item;
 								fix = true;
@@ -218,19 +170,27 @@ public class PlayerMove : MonoBehaviour
 						}
 
 					} else {
-						if (item == null) {
-							state = PlayerState.pick_up;
-							fix = true;
-						} else if (isHold) {
+						if (item) {
 							state = PlayerState.change_item;
+							fix = true;
+						} else {
+							state = PlayerState.pick_up;
 							fix = true;
 						}
 					}
 				
 
 				} else if (item) {
-					state = PlayerState.put_down;
-					fix = true;
+					if (isHold) {
+						// put item to inventory
+						state = PlayerState.put_inventory;
+						fix = true;
+
+					} else {
+						state = PlayerState.put_down;
+						fix = true;
+						
+					}
 				}
 
 				holdTime = 0f;
@@ -295,13 +255,20 @@ public class PlayerMove : MonoBehaviour
 		target.transform.localPosition = Vector3.zero;
 		target.transform.rotation = new Quaternion(0, 0, 0, 0);
 		item = target;
-
+		targetItem = currTile.item;
 	}
 
 	public void PutDown(ItemInfo target)
 	{
 		target.transform.SetParent(currTile.transform);
 		target.transform.localPosition = new Vector3(0, 0.49f, 0);
+		item = null;
+		targetItem = currTile.item;
+	}
+
+	public void PutItem(){
+		item.gameObject.SetActive (false);
+		inventory.AddItem (item);
 		item = null;
 	}
 
@@ -378,15 +345,6 @@ public class PlayerMove : MonoBehaviour
 
 	}
 
-	public void SetCursor(int x, int y){
-		currentCursor [0] = x;
-		currentCursor [1] = y;
-		cursor.transform.SetParent (inventoryImage [currentCursor [1], currentCursor [0]].transform.parent);
-		Vector3 tmp = cursor.rectTransform.localPosition;
-		tmp.x = 25f;
-		tmp.y = 25f;
-		cursor.rectTransform.localPosition = tmp;
-	}
 
 	//	IEnumerator waitForTransition(bool value) {
 	//		yield return new WaitForEndOfFrame();

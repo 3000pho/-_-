@@ -21,6 +21,7 @@ public class UpItemAnim : StateMachineBehaviour {
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 //		Debug.Log ("up item exit");
+		ItemInfo org = character.currTile.item;
 		ItemInfo to = null;
 
 		if(character.state.Equals(PlayerState.change_item)) {
@@ -30,9 +31,9 @@ public class UpItemAnim : StateMachineBehaviour {
 
 		}
 
-		character.PickUp (character.currTile.item);
-		character.fix = false;
 		character.currTile.item = to;
+		character.PickUp (org);
+		character.fix = false;
 	}
 
 	//OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

@@ -8,7 +8,7 @@ public class ItemInfo : MapObject
 	public ItemStyle currentItemStyle;
 	public BoxCollider boxCollider;
 	public bool gettable;
-	protected int itemCode { get; set; }
+	protected int itemCode;
 
 	public void UpdateStyle(GameObject[] m)
 	{
@@ -89,6 +89,14 @@ public class ItemInfo : MapObject
 			return new Vector3(resized, resized, resized);
 		}
 		return obj.transform.localScale;
+	}
+
+	public override bool Equals (object other)
+	{
+		if (other != null && other is ItemInfo) {
+			return itemCode.Equals ((other as ItemInfo).itemCode);
+		}
+		return false;
 	}
 }
 
